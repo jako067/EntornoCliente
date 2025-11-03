@@ -1,6 +1,6 @@
 
 //setTimeout(() => {window.location.href = "https://www.google.es";}, 5000);
-let bara="";
+/*let bara="";
 var cont=0;
 const temp2=setInterval(()=>{
 barra+="█"
@@ -8,4 +8,6 @@ barra+="█"
     cont++;
 if(cont>=10) clearInterval(temp2); console.log("carga completada");
 },5000);
+*/
+
 
