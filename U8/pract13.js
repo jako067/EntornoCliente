@@ -1,61 +1,56 @@
-let button = document.getElementById('buy');
+const button = document.getElementById('buy');
+const results = document.getElementById('results');
 
-function buy() {
-  var producto = document.getElementById('name').value;
-    var direction = document.getElementById('send').value;
-
-  function procesarPago(producto) {
-    return new Promise((aceptar, rechazar) => {
-      setTimeout(function todo(){ 
-    if (producto == '') 
-        rechazar(Error("No se puede procesar el pago sin producto"));
-      else {
-        enviarPedido(direction).then(() => {console.log('el envio salió bien');
-  })
-  .catch((error) => {
-    var txt = document.createElement('div');
-    txt.textContent=error.message;
-    document.getElementById('results').appendChild(txt);
-  });
-
-
-
-    var txt = document.createElement('div');
-    txt.textContent='Se añadió correctamente el producto:'+producto;
-    document.getElementById('results').appendChild(txt);
-    aceptar('');}},1500);
-    });
-  }
-  
-
-  
-  
-  
-  procesarPago(producto)
-  .then((respuesta) => {console.log('ole');
-  })
-  .catch((error) => {
-    var txt = document.createElement('div');
-    txt.textContent=error.message;
-    document.getElementById('results').appendChild(txt);
+function procesarPago(producto) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (!producto || producto.trim() === '') {
+        reject(new Error("No se puede procesar el pago sin producto"));
+      } else {
+        resolve(`Pago procesado correctamente para ${producto}`);
+      }
+    }, 1500);
   });
 }
 
-function enviarPedido(direction){
-    return new Promise((aceptar, rechazar) => {
-
-    if(!direction==''){
-        setTimeout(function sadsa(){
-            let random=Math.random() * (100 - 0);
-            if(random>20){aceptar('')}
-            else{rechazar('mala suerte')}
-
-        },2000);
+function enviarPedido(direccion) {
+  return new Promise((resolve, reject) => {
+    if (!direccion || direccion.trim() === '') {
+      reject(new Error("Dirección de envío no válida"));
+      return;
     }
-    else rechazar(Error('Dirección de envío no válida'))
-})
+
+    setTimeout(() => {
+
+      if (Math.random() < 0.2) {
+        reject(new Error("Error durante el envío, intente de nuevo."));
+      } else {
+        resolve(`Pedido enviado correctamente a ${direccion}`);
+      }
+    }, 2000);
+  });
+}
+
+
+async function buy() {
+
+  results.textContent = '';
+
+  const producto = document.getElementById('name').value;
+  const direccion = document.getElementById('send').value;
+
+  try {
+    const pagoMsg = await procesarPago(producto);
+
+    results.textContent = pagoMsg;
+
+    const envioMsg = await enviarPedido(direccion);
+
+    results.textContent = envioMsg;
+  } catch (err) {
+
+    results.textContent = err.message || String(err);
+  }
 }
 
 button.addEventListener('click', buy);
-
-
