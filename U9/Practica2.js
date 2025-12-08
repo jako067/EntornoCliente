@@ -8,7 +8,6 @@ boton.addEventListener('click', main);
 
 function main() {
   //ahora arreglamos el fetch y ya está
-
   id = document.getElementById('id').value;
 
   fetch(`https://dummyjson.com/products/${id}`)
